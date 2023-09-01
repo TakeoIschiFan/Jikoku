@@ -1,9 +1,12 @@
+import logging
+import os
+from dataclasses import dataclass
+
+import jikoku.config as config
 from jikoku.models import *
 from jikoku.utils import *
-from datetime import time, timedelta
-from pprint import pprint
-import jikoku.config as config
-from dataclasses import dataclass
+
+Log = logging.getLogger(__name__)
 
 
 @dataclass
@@ -21,9 +24,9 @@ def schedule(services: list[Service], **kwargs) -> Schedule:
         if kword in conf.__dict__:
             conf.__dict__[kword] = value
         else:
-            print(f"unknown config item {kword}, skipping")
+            Log.error(f"unknown config item {kword}, skipping")
 
-    print(f"using config {config}")
+    Log.info(f"using config {config}")
 
     services.sort(key=lambda s: s.start_time)
 
@@ -50,3 +53,13 @@ def schedule(services: list[Service], **kwargs) -> Schedule:
         trips.append(Trip(service, using_train.train))
 
     return Schedule(trips)
+
+
+if __name__ == "__main__":
+    loglevel = logging.DEBUG if os.getenv("DEBUG") else logging.WARNING
+    logging.basicConfig(
+        level=loglevel,
+        format="%(asctime)s - %(levelname)s@%(module)s:%(lineno)d - %(message)s",
+        datefmt="[%H:%M:%S]",
+    )
+    Log.warning("lmao")

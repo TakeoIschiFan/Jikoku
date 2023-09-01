@@ -7,8 +7,8 @@ from datetime import time, timedelta
 
 @pytest.fixture
 def basic() -> list[Service]:
-    """Provide a basic schedule for a 1.5 hour route from an A to B station which runs hourly from 8-20h in both
-    directions.
+    """Provide a basic schedule for a 1.5 hour route from an A (Teufort) to B (Badlans) station which runs hourly
+    from 8-20h in both directions.
     """
     starts = time(hour=8)
     ends = time(hour=9, minute=30)
@@ -54,6 +54,6 @@ def test_basic_schedule(basic):
 
 
 def test_basic_schedule_custom_minimum_time_between_services(basic):
-    # forcing a 35 minute wait for trains in the basic schedule should require 6 trains
+    # forcing a 35-minute wait for trains in the basic schedule should require 6 trains
     schedule = scheduler.schedule(basic, minimum_minutes_between_services=35)
     assert schedule.number_of_trains == 6
