@@ -37,6 +37,7 @@ class Stop:
 @dataclass
 class Service:
     name: str
+    # TODO: These times should be coupled via a getter to the first and last stop times...
     start_time: time
     end_time: time
     stops: list[Stop]
@@ -76,4 +77,20 @@ class Service:
 
 @dataclass
 class Train:
-    id: str
+    # TODO this should be unique, any way to enforce?
+    name: str
+
+
+@dataclass
+class Trip:
+    service: Service
+    train: Train
+
+
+@dataclass
+class Schedule:
+    trips: list[Trip]
+
+    @property
+    def number_of_trains(self):
+        return len({t.train.name for t in self.trips})
