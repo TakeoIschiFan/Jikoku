@@ -5,11 +5,7 @@ from jikoku.models import *
 from datetime import time, timedelta
 
 
-@pytest.fixture
-def basic() -> list[Service]:
-    """Provide a basic schedule for a 1.5 hour route from an A (Teufort) to B (Badlans) station which runs hourly
-    from 8-20h in both directions.
-    """
+def get_basic_schedule():
     starts = time(hour=8)
     ends = time(hour=9, minute=30)
 
@@ -45,6 +41,14 @@ def basic() -> list[Service]:
     )
 
     return [first + timedelta(hours=i) for i in range(13)] + ([first_return + timedelta(hours=i) for i in range(13)])
+
+
+@pytest.fixture
+def basic() -> list[Service]:
+    """Provide a basic schedule for a 1.5 hour route from an A (Teufort) to B (Badlans) station which runs hourly
+    from 8-20h in both directions.
+    """
+    return get_basic_schedule()
 
 
 def test_basic_schedule(basic):

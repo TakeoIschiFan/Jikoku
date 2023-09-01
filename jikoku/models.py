@@ -6,12 +6,12 @@ from jikoku.utils import add_times, subtract_times
 
 @dataclass
 class Stop:
-    stop_name: str
+    name: str
     stop_time: time
 
     def __add__(self, other):
         if isinstance(other, timedelta):
-            return Stop(self.stop_name, add_times(self.stop_time, other))
+            return Stop(self.name, add_times(self.stop_time, other))
         else:
             raise NotImplementedError()
 
@@ -23,7 +23,7 @@ class Stop:
 
     def __sub__(self, other):
         if isinstance(other, timedelta):
-            return Stop(self.stop_name, subtract_times(self.stop_time, other))
+            return Stop(self.name, subtract_times(self.stop_time, other))
         else:
             raise NotImplementedError()
 
@@ -74,6 +74,12 @@ class Service:
         else:
             raise NotImplementedError()
 
+    def first_stop(self) -> Stop:
+        return self.stops[0]
+
+    def last_stop(self) -> Stop:
+        return self.stops[-1]
+
 
 @dataclass
 class Train:
@@ -89,6 +95,7 @@ class Trip:
 
 @dataclass
 class Schedule:
+    name: str
     trips: list[Trip]
 
     @property
