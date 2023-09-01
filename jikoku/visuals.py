@@ -3,7 +3,6 @@ Module for printing & visualizing Jikoku object data.
 """
 import itertools
 import logging
-from pprint import pprint
 
 from jikoku.models import *
 from jikoku.scheduler import schedule
@@ -36,5 +35,4 @@ if __name__ == "__main__":
 
 
     s = schedule(get_basic_schedule())
-    pprint(s)
     Log.info(pretty_print_schedule(s))
