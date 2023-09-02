@@ -211,6 +211,20 @@ python-dateutil = ">=2.8.1"
 dev = ["flake8", "markdown", "twine", "wheel"]
 
 [[package]]
+name = "griffe"
+version = "0.36.0"
+description = "Signatures for entire Python programs. Extract the structure, the frame, the skeleton of your project, to generate API documentation or find breaking changes in your API."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "griffe-0.36.0-py3-none-any.whl", hash = "sha256:4235df397b7b56192cbfda601e458526279bdaf3bf1f59d0be368abac72bf42d"},
+    {file = "griffe-0.36.0.tar.gz", hash = "sha256:ccf062126041d19cc4d9850ca46a555a656e738f5e83feb78f36b05fec5974ad"},
+]
+
+[package.dependencies]
+colorama = ">=0.4"
+
+[[package]]
 name = "idna"
 version = "3.4"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -416,13 +430,13 @@ files = [
 
 [[package]]
 name = "mkdocstrings"
-version = "0.22.0"
+version = "0.23.0"
 description = "Automatic documentation from sources, for MkDocs."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "mkdocstrings-0.22.0-py3-none-any.whl", hash = "sha256:2d4095d461554ff6a778fdabdca3c00c468c2f1459d469f7a7f622a2b23212ba"},
-    {file = "mkdocstrings-0.22.0.tar.gz", hash = "sha256:82a33b94150ebb3d4b5c73bab4598c3e21468c79ec072eff6931c8f3bfc38256"},
+    {file = "mkdocstrings-0.23.0-py3-none-any.whl", hash = "sha256:051fa4014dfcd9ed90254ae91de2dbb4f24e166347dae7be9a997fe16316c65e"},
+    {file = "mkdocstrings-0.23.0.tar.gz", hash = "sha256:d9c6a37ffbe7c14a7a54ef1258c70b8d394e6a33a1c80832bce40b9567138d1c"},
 ]
 
 [package.dependencies]
@@ -431,12 +445,28 @@ Markdown = ">=3.3"
 MarkupSafe = ">=1.1"
 mkdocs = ">=1.2"
 mkdocs-autorefs = ">=0.3.1"
+mkdocstrings-python = {version = ">=0.5.2", optional = true, markers = "extra == \"python\""}
 pymdown-extensions = ">=6.3"
 
 [package.extras]
 crystal = ["mkdocstrings-crystal (>=0.3.4)"]
 python = ["mkdocstrings-python (>=0.5.2)"]
 python-legacy = ["mkdocstrings-python-legacy (>=0.2.1)"]
+
+[[package]]
+name = "mkdocstrings-python"
+version = "1.6.0"
+description = "A Python handler for mkdocstrings."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "mkdocstrings_python-1.6.0-py3-none-any.whl", hash = "sha256:06f116112b335114372f2554b1bf61b709c74ab72605010e1605c1086932dffe"},
+    {file = "mkdocstrings_python-1.6.0.tar.gz", hash = "sha256:6164ccaa6e488abc2a8fbccdfd1f21948c2c344d3f347847783a5d1c6fa2bfbf"},
+]
+
+[package.dependencies]
+griffe = ">=0.35"
+mkdocstrings = ">=0.20"
 
 [[package]]
 name = "mypy-extensions"
@@ -839,4 +869,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "3d25ceb404e004d42ad4cd76889d8eb2d35dd71d5600b4d4be927488e74ad443"
+content-hash = "62762a20689a1704335ba681181619b3bed1e52d98ad09e11f3eb908ccd8c196"
