@@ -1,6 +1,5 @@
 import logging
 import os
-from utils import generate_unique_name
 from dataclasses import dataclass
 
 import jikoku.config as config

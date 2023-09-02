@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import time, timedelta
+from typing import Self
 
 from jikoku.utils import add_times, subtract_times
 
@@ -41,6 +42,10 @@ class Service:
     start_time: time
     end_time: time
     stops: list[Stop]
+
+    @classmethod
+    def from_stops(cls, name: str, stops: list[Stop]) -> Self:
+        return cls(name, stops[0].stop_time, stops[-1].stop_time, stops)
 
     def __add__(self, other):
         if isinstance(other, timedelta):
