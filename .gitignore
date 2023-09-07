@@ -2,3 +2,5 @@ __pycache__/
 .env
 .pytest_cache
 .idea
+dist/
+docs/site/
