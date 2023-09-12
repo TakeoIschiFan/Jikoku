@@ -26,7 +26,7 @@ The Poetry virtual environment used to build the project should now have a `jiko
 
 ??? note "Other installation options"
 
-    If you don't want to use Poetry, all dependencies are specified in `pyproject.toml`, are installable manually.
+    If you don't want to use Poetry, all dependencies are specified in `pyproject.toml` and thus installable manually.
     Notably, Poetry provides a way to export the lock file to a `requirements.txt` file using the following command:
     ```bash
     poetry export -f requirements.txt --output requirements.txt
@@ -47,18 +47,16 @@ from datetime import time, timedelta
 ```
 
 Let's now define a simple service. In Jikoku, a service is simply a list of consecutive stops that a train calls at.
-Here we model a city-pair connection between 
+Here we model a city-pair connection between two cities as pictured below:
 
 ```mermaid
 flowchart LR
-    A[Teufort] -->|leaves at 08:00| S(Service)
-    S(service)-->|arrives at 09:30| B[Badlands]
-    B[Badlands]-->|leaves at 08:30|R(Return Service)
-    R(Return Service)-->|arrives at 09:30| A[Teufort]
+    A[Teufort] --> B[Badlands]
+    B[Badlands]--> A[Teufort]
 ```
 
 ```python
-# Define a simple service and return service
+# Define a start and arrival time for the first train of the day
 starts = time(hour=8)
 ends = time(hour=9, minute=30)
 
@@ -84,16 +82,11 @@ train-jzVbxj
         11:00:00 - 12:30:00: Teufort => Badlands
 """
 ```
+ 
+## Next steps
 
-See [the Documentation](/docs) for more examples, including real word schedules from JR & SNCF! 
-  
-## Installation  
-  
-Jikoku is not available on PyPI yet. For now, download the source code and build the package locally, preferable using [Poetry](https://github.com/python-poetry/poetry).
+You might want to look at a real word example [here](/todo),
+or delve into more advanced concepts such as:
 
-```bash
-git clone https://github.com/TakeoIschiFan/Jikoku
-cd Jikoku
-poetry install
-```
-After which, a Jikoku package should be installed in the local Poetry virtual environment.
+- [How to configure the scheduler]()
+- [the API reference](/API reference)

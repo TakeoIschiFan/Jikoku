@@ -1,12 +1,18 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 
 site_name: Jikoku Documentation
+repo_url: https://github.com/takeoischifan/jikoku
+repo_name: takeoischifan/jikoku
+
 
 theme:
   name: material
   features:
     - content.code.copy
     - content.code.select
+  palette:
+    scheme: slate
+    primary: green
 
 
 plugins:
