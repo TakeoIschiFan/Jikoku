@@ -14,6 +14,7 @@ class TimePoint(ABC):
 
     @abstractmethod
     def __str__(self):
+        """Forces child classes to implement __str__ method"""
         pass
 
 
@@ -26,13 +27,19 @@ class DailyTimePoint(TimePoint):
         return DailyTimePoint(hour=0, minute=self._t + other._t)
 
     def minus(self, other: Self) -> Self:
-        pass
+        return DailyTimePoint(hour=0, minute=self._t - other._t)
 
     def __add__(self, other):
         if not isinstance(other, DailyTimePoint):
             raise TypeError("Can only add a TimePoint of the same type to another TimePoint!")
 
         return self.plus(other)
+
+    def __sub__(self, other):
+        if not isinstance(other, DailyTimePoint):
+            raise TypeError("Can only subtract a TimePoint of the same type to another TimePoint!")
+
+        return self.minus(other)
 
     def __str__(self):
         date, total_min = divmod(self._t, 24 * 60)
@@ -48,3 +55,8 @@ class DailyTimePoint(TimePoint):
             return f"In {date} days at {hours:02}:{minutes:02}"
         elif date <= -2:
             return f"{abs(date)} days ago at {hours:02}:{minutes:02}"
+
+class WeeklyTimePoint(TimePoint):
+    pass
+
+
