@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Self
 
+# FIXME: the abstract class should have some notion of adding a few minutes to an existing timepoint!
+
 
 class TimePoint(ABC):
     @abstractmethod
@@ -12,12 +14,48 @@ class TimePoint(ABC):
         pass
 
     @abstractmethod
+    def same_time(self, other: Self) -> bool:
+        pass
+
+    @abstractmethod
+    def earlier_than(self, other: Self) -> bool:
+        pass
+
+    def __add__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError(
+                "Can only add a TimePoint of the same type to another TimePoint!"
+            )
+
+        return self.plus(other)
+
+    def __sub__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError(
+                "Can only subtract a TimePoint of the same type to another TimePoint!"
+            )
+
+        return self.minus(other)
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError("Can only compare Timepoints of the same type!")
+
+        return self.same_time(other)
+
+    def __lt__(self, other):
+        if not isinstance(other, self.__class__):
+            raise TypeError("Can only compare Timepoints of the same type!")
+
+        return self.same_time(other)
+
+    @abstractmethod
     def __str__(self):
         """Forces child classes to implement __str__ method"""
         pass
 
 
-class DailyTimePoint(TimePoint):
+class DailyTimePoint(TimePoint, ABC):
     def __init__(
         self, hour: int = 0, minute: int = 0, day: int = 0, previous: Self = None
     ):
@@ -29,21 +67,11 @@ class DailyTimePoint(TimePoint):
     def minus(self, other: Self) -> Self:
         return DailyTimePoint(hour=0, minute=self._t - other._t)
 
-    def __add__(self, other):
-        if not isinstance(other, DailyTimePoint):
-            raise TypeError(
-                "Can only add a TimePoint of the same type to another TimePoint!"
-            )
+    def same_time(self, other: Self) -> bool:
+        return self._t == other._t
 
-        return self.plus(other)
-
-    def __sub__(self, other):
-        if not isinstance(other, DailyTimePoint):
-            raise TypeError(
-                "Can only subtract a TimePoint of the same type to another TimePoint!"
-            )
-
-        return self.minus(other)
+    def earlier_than(self, other: Self) -> bool:
+        return self._t <= other._t
 
     def __str__(self):
         date, total_min = divmod(self._t, 24 * 60)

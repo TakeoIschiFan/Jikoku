@@ -4,20 +4,20 @@ from jikoku import scheduler
 from jikoku.models import *
 from datetime import time, timedelta
 
+from jikoku.time import DailyTimePoint
+
 
 def get_basic_schedule():
-    starts = time(hour=8)
-    ends = time(hour=9, minute=30)
+    starts = DailyTimePoint(hour=8)
+    ends = DailyTimePoint(hour=9, minute=30)
 
-    first = Service(
-        "a_service", starts, ends, [Stop("Teufort", starts), Stop("Badlands", ends)]
-    )
+    first = Service("a_service", [Stop("Teufort", starts), Stop("Badlands", ends)])
     first_return = Service(
-        "a_service", starts, ends, [Stop("Badlands", starts), Stop("Teufort", ends)]
+        "a_service", [Stop("Badlands", starts), Stop("Teufort", ends)]
     )
 
-    return [first + timedelta(hours=i) for i in range(13)] + (
-        [first_return + timedelta(hours=i) for i in range(13)]
+    return [first + DailyTimePoint(hour=i) for i in range(13)] + (
+        [first_return + DailyTimePoint(hour=i) for i in range(13)]
     )
 
 

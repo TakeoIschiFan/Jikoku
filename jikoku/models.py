@@ -2,37 +2,23 @@ from dataclasses import dataclass
 from datetime import time, timedelta
 from typing import Self
 
+from jikoku.time import TimePoint
 from jikoku.utils import add_times, subtract_times
 
 
 @dataclass
 class Stop:
     name: str
-    stop_time: time
+    stop_time: TimePoint
 
     def __add__(self, other):
-        if isinstance(other, timedelta):
-            return Stop(self.name, add_times(self.stop_time, other))
-        else:
-            raise NotImplementedError()
-
-    def __iadd__(self, other):
-        if isinstance(other, timedelta):
-            self.stop_time = add_times(self.stop_time, other)
-        else:
-            raise NotImplementedError()
+        return Stop(self.name, self.stop_time.plus(other))
 
     def __sub__(self, other):
-        if isinstance(other, timedelta):
-            return Stop(self.name, subtract_times(self.stop_time, other))
-        else:
-            raise NotImplementedError()
+        return Stop(self.name, self.stop_time.minus(other))
 
-    def __isub__(self, other):
-        if isinstance(other, timedelta):
-            self.stop_time = subtract_times(self.stop_time, other)
-        else:
-            raise NotImplementedError()
+    def __le__(self, other):
+        pass
 
 
 @dataclass
@@ -42,60 +28,41 @@ class Service:
     """
 
     name: str
-    # TODO: These times should be coupled via a getter to the first and last stop times...
-    start_time: time
-    end_time: time
     stops: list[Stop]
 
     @classmethod
     def from_stops(cls, name: str, stops: list[Stop]) -> Self:
-        return cls(name, stops[0].stop_time, stops[-1].stop_time, stops)
+        return cls(name, stops)
 
-    def __add__(self, other):
-        if isinstance(other, timedelta):
-            new_name = self.name + "_shift_by_" + str(other)
-            return Service(
-                new_name,
-                add_times(self.start_time, other),
-                add_times(self.end_time, other),
-                [stop + other for stop in self.stops],
-            )
-        else:
-            raise NotImplementedError()
+    @property
+    def start_time(self) -> TimePoint:
+        return self.stops[0].stop_time
 
-    def __iadd__(self, other):
-        if isinstance(other, timedelta):
-            self.start_time = add_times(self.start_time, other)
-            self.end_time = add_times(self.end_time, other)
-            self.stops = [stop + other for stop in self.stops]
-        else:
-            raise NotImplementedError()
-
-    def __sub__(self, other):
-        if isinstance(other, timedelta):
-            new_name = self.name + "_shift_by_minus" + str(other)
-            return Service(
-                new_name,
-                subtract_times(self.start_time, other),
-                subtract_times(self.end_time, other),
-                [stop + other for stop in self.stops],
-            )
-        else:
-            raise NotImplementedError()
-
-    def __isub__(self, other):
-        if isinstance(other, timedelta):
-            self.start_time = subtract_times(self.start_time, other)
-            self.end_time = subtract_times(self.end_time, other)
-            self.stops = [stop + other for stop in self.stops]
-        else:
-            raise NotImplementedError()
-
+    @property
     def first_stop(self) -> Stop:
         return self.stops[0]
 
+    @property
     def last_stop(self) -> Stop:
         return self.stops[-1]
+
+    @property
+    def end_time(self) -> TimePoint:
+        return self.stops[-1].stop_time
+
+    def __add__(self, other: TimePoint):
+        new_name = self.name + "_shift_by_" + str(other)
+        return Service(
+            new_name,
+            [stop + other for stop in self.stops],
+        )
+
+    def __sub__(self, other: TimePoint):
+        new_name = self.name + "_shift_by_minus" + str(other)
+        return Service(
+            new_name,
+            [stop - other for stop in self.stops],
+        )
 
 
 @dataclass

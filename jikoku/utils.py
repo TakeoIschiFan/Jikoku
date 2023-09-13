@@ -1,3 +1,5 @@
+import logging
+import os
 import secrets
 import string
 from datetime import time, date, timedelta, datetime
@@ -30,3 +32,12 @@ def generate_unique_name(length: int = 6) -> str:
     characters = string.ascii_letters + string.digits
     unique_string = "".join(secrets.choice(characters) for _ in range(length))
     return unique_string
+
+
+def setup_logging():
+    loglevel = logging.DEBUG if os.getenv("DEBUG") else logging.WARNING
+    logging.basicConfig(
+        level=loglevel,
+        format="%(asctime)s - %(levelname)s@%(module)s:%(lineno)d - %(message)s",
+        datefmt="[%H:%M:%S]",
+    )
