@@ -40,6 +40,7 @@ class Service:
     """
     This is a test api documentation
     """
+
     name: str
     # TODO: These times should be coupled via a getter to the first and last stop times...
     start_time: time
@@ -53,8 +54,12 @@ class Service:
     def __add__(self, other):
         if isinstance(other, timedelta):
             new_name = self.name + "_shift_by_" + str(other)
-            return Service(new_name, add_times(self.start_time, other), add_times(self.end_time, other),
-                           [stop + other for stop in self.stops])
+            return Service(
+                new_name,
+                add_times(self.start_time, other),
+                add_times(self.end_time, other),
+                [stop + other for stop in self.stops],
+            )
         else:
             raise NotImplementedError()
 
@@ -69,8 +74,12 @@ class Service:
     def __sub__(self, other):
         if isinstance(other, timedelta):
             new_name = self.name + "_shift_by_minus" + str(other)
-            return Service(new_name, subtract_times(self.start_time, other), subtract_times(self.end_time, other),
-                           [stop + other for stop in self.stops])
+            return Service(
+                new_name,
+                subtract_times(self.start_time, other),
+                subtract_times(self.end_time, other),
+                [stop + other for stop in self.stops],
+            )
         else:
             raise NotImplementedError()
 

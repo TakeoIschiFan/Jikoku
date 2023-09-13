@@ -3,7 +3,6 @@ from typing import Self
 
 
 class TimePoint(ABC):
-
     @abstractmethod
     def plus(self, other: Self) -> Self:
         pass
@@ -19,8 +18,9 @@ class TimePoint(ABC):
 
 
 class DailyTimePoint(TimePoint):
-
-    def __init__(self, hour: int = 0, minute: int = 0, day: int = 0, previous: Self = None):
+    def __init__(
+        self, hour: int = 0, minute: int = 0, day: int = 0, previous: Self = None
+    ):
         self._t = day * 24 * 60 + hour * 60 + minute
 
     def plus(self, other: Self) -> Self:
@@ -31,13 +31,17 @@ class DailyTimePoint(TimePoint):
 
     def __add__(self, other):
         if not isinstance(other, DailyTimePoint):
-            raise TypeError("Can only add a TimePoint of the same type to another TimePoint!")
+            raise TypeError(
+                "Can only add a TimePoint of the same type to another TimePoint!"
+            )
 
         return self.plus(other)
 
     def __sub__(self, other):
         if not isinstance(other, DailyTimePoint):
-            raise TypeError("Can only subtract a TimePoint of the same type to another TimePoint!")
+            raise TypeError(
+                "Can only subtract a TimePoint of the same type to another TimePoint!"
+            )
 
         return self.minus(other)
 
@@ -56,7 +60,6 @@ class DailyTimePoint(TimePoint):
         elif date <= -2:
             return f"{abs(date)} days ago at {hours:02}:{minutes:02}"
 
+
 class WeeklyTimePoint(TimePoint):
     pass
-
-

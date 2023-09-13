@@ -37,7 +37,9 @@ def parse(path: str) -> list[Service]:
 
         service_name_row = cleanup_row(table.find("tr", class_="tableTr_trainNumber"))
         service_type_row = cleanup_row(table.find("tr", class_="tableTr_trainName"))
-        raw_station_rows = [row for row in table.find_all("tr") if not row.has_attr("class")]
+        raw_station_rows = [
+            row for row in table.find_all("tr") if not row.has_attr("class")
+        ]
         # extract the name out of the th tag before cleaning up the station rows
         station_names = [r.find("th").text for r in raw_station_rows]
         station_rows = [cleanup_row(r) for r in raw_station_rows]
@@ -50,7 +52,8 @@ def parse(path: str) -> list[Service]:
             through_service_row = list()
 
         for i, (service_name, service_type, through_service) in enumerate(
-                zip_longest(service_name_row, service_type_row, through_service_row)):
+            zip_longest(service_name_row, service_type_row, through_service_row)
+        ):
             Log.debug(f"Parsing service {service_name}")
             if service_type != "普通":
                 Log.debug("skipping because it is not a 普通 service.")
@@ -61,7 +64,6 @@ def parse(path: str) -> list[Service]:
                 continue
 
             def get_stops_or_fail(names, rows):
-
                 stops = list()
                 for station_name, station_row in zip(names, rows):
                     Log.debug(f"trying station {station_name}")
@@ -78,7 +80,9 @@ def parse(path: str) -> list[Service]:
                         case "＝":
                             return stops
                         case _:
-                            Log.debug(f"found station {station_name} calling at {content}")
+                            Log.debug(
+                                f"found station {station_name} calling at {content}"
+                            )
                             time = to_time(content)
                             stops.append(Stop(station_name, time))
 
@@ -101,7 +105,9 @@ if __name__ == "__main__":
         datefmt="[%H:%M:%S]",
     )
 
-    services = parse("pages/keiyoline_from_soga.html") + parse("pages/keiyoline_from_tokyo.html")
+    services = parse("pages/keiyoline_from_soga.html") + parse(
+        "pages/keiyoline_from_tokyo.html"
+    )
     Log.debug(services)
     s = schedule(services)
     Log.debug(pretty_print_schedule(s))

@@ -21,9 +21,12 @@ def compare_times(a_time: time, b_time: time) -> timedelta:
     """
     Compares two times, ignoring 24 rollover, i.e. 23h - 1h the next day will give a time difference of 22 hours!
     """
-    return datetime.combine(date.today(), a_time) - datetime.combine(date.today(), b_time)
+    return datetime.combine(date.today(), a_time) - datetime.combine(
+        date.today(), b_time
+    )
 
-def generate_unique_name(length:int = 6) -> str:
+
+def generate_unique_name(length: int = 6) -> str:
     characters = string.ascii_letters + string.digits
-    unique_string = ''.join(secrets.choice(characters) for _ in range(length))
+    unique_string = "".join(secrets.choice(characters) for _ in range(length))
     return unique_string

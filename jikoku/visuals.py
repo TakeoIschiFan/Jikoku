@@ -33,6 +33,5 @@ if __name__ == "__main__":
         datefmt="[%H:%M:%S]",
     )
 
-
     s = schedule(get_basic_schedule())
     Log.info(pretty_print_schedule(s))

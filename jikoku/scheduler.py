@@ -21,7 +21,9 @@ class TrainData:
 
 def choose_train_heuristic(to_fill: Service, available_trains: list[TrainData]):
     # give precedence to
-    trains_at_same_location = [t for t in available_trains if t.free_location == to_fill.first_stop().name]
+    trains_at_same_location = [
+        t for t in available_trains if t.free_location == to_fill.first_stop().name
+    ]
     if trains_at_same_location:
         return trains_at_same_location[0]
     else:
@@ -57,14 +59,20 @@ def schedule(services: list[Service], **kwargs) -> Schedule:
             using_train = Train(f"train-{generate_unique_name()}")
             data = TrainData(
                 using_train,
-                add_times(service.end_time, timedelta(minutes=conf.minimum_minutes_between_services)),
-                service.last_stop().name
+                add_times(
+                    service.end_time,
+                    timedelta(minutes=conf.minimum_minutes_between_services),
+                ),
+                service.last_stop().name,
             )
             trainsData.append(data)
         else:
             data = choose_train_heuristic(service, available_trains)
             using_train = data.train
-            data.busy_until = add_times(service.end_time, timedelta(minutes=conf.minimum_minutes_between_services))
+            data.busy_until = add_times(
+                service.end_time,
+                timedelta(minutes=conf.minimum_minutes_between_services),
+            )
             data.free_location = service.last_stop().name
 
         trips.append(Trip(service, using_train))

@@ -10,37 +10,15 @@ def get_basic_schedule():
     ends = time(hour=9, minute=30)
 
     first = Service(
-        "a_service",
-        starts,
-        ends,
-        [
-            Stop(
-                "Teufort",
-                starts
-            ),
-            Stop(
-                "Badlands",
-                ends
-            )
-        ]
+        "a_service", starts, ends, [Stop("Teufort", starts), Stop("Badlands", ends)]
     )
     first_return = Service(
-        "a_service",
-        starts,
-        ends,
-        [
-            Stop(
-                "Badlands",
-                starts
-            ),
-            Stop(
-                "Teufort",
-                ends
-            )
-        ]
+        "a_service", starts, ends, [Stop("Badlands", starts), Stop("Teufort", ends)]
     )
 
-    return [first + timedelta(hours=i) for i in range(13)] + ([first_return + timedelta(hours=i) for i in range(13)])
+    return [first + timedelta(hours=i) for i in range(13)] + (
+        [first_return + timedelta(hours=i) for i in range(13)]
+    )
 
 
 @pytest.fixture
