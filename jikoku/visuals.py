@@ -20,7 +20,7 @@ def pretty_print_schedule(schedule: Schedule) -> str:
     for train, trips in itertools.groupby(sorted_trips, key=lambda t: t.train.name):
         to_print += f"{train}\n"
         for trip in trips:
-            to_print += f"\t{trip.service.start_time} - {trip.service.end_time}: {trip.service.first_stop().name} => {trip.service.last_stop().name}\n"
+            to_print += f"\t{trip.service.start_time} - {trip.service.end_time}: {trip.service.first_stop.name} => {trip.service.last_stop.name}\n"
 
     return to_print
 

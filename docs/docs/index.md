@@ -56,18 +56,23 @@ flowchart LR
 ```
 
 ```python
+from jikoku.time import DailyTimePoint
+from jikoku.models import Service, Stop
+from jikoku.scheduler import schedule
+
 # Define a start and arrival time for the first train of the day
-starts = time(hour=8)
-ends = time(hour=9, minute=30)
+starts = DailyTimePoint(hour=8)
+ends = DailyTimePoint(hour=9, minute=30)
 
-first = Service("a_service", starts, ends, [Stop("Teufort", starts), Stop("Badlands",ends)])
-first_return = Service( "a_return_service",starts , ends, [Stop("Badlands", starts), Stop("Teufort", ends)])
+# Define a first service and its return service
+first = Service("a_service", [Stop("Teufort", starts), Stop("Badlands", ends)])
+first_return = Service("a_service", [Stop("Badlands", starts), Stop("Teufort", ends)])
 
-# Schedule the services
-generated_schedule = schedule(all_services)
-print(generated_schedule)
+# Repeat those services throughout the day
+all_services = [first + DailyTimePoint(hour=i) for i in range(3)] + ([first_return + DailyTimePoint(hour=i) for i in range(3)] )
+
+print(schedule(all_services))
 """prints the following:
-
 train-ZT4bwn
         09:00:00 - 10:30:00: Teufort => Badlands
         11:00:00 - 12:30:00: Badlands => Teufort
