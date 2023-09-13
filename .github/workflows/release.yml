@@ -1,0 +1,67 @@
+name: Create Release
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+
+      - name: Setup a local virtual environment
+        run: |
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+
+      - uses: actions/cache@v3
+        name: Define a cache for the virtual environment based on the dependencies lock file
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('poetry.lock') }}
+
+      - name: Install the project dependencies
+        run: poetry install
+
+      - name: Run the automated tests
+        run: poetry run pytest -v
+
+      - name: Build the package
+        run: poetry build
+
+      - name: Publish the package on Test Pypi
+        run: |
+          poetry config repositories.test-pypi https://test.pypi.org/legacy/
+          poetry config pypi-token.test-pypi "$TEST_PYPI_TOKEN"
+          # poetry publish -r test-pypi
+
+      - name: Add poetry version & github token to envs
+        id: set_tag
+        run: |
+          echo "TAG_NAME=$(poetry version --short)">> $GITHUB_ENV
+          echo "RELEASE_ACCES_TOKEN=$RELEASE_ACCES_TOKEN">> $GITHUB_ENV
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ env.RELEASE_ACCES_TOKEN }}
+          files: |
+            dist/*
+          title: Release ${{ env.TAG_NAME }}
+          body: |
+            # Release Notes
+          tag_name: ${{ env.TAG_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ env.RELEASE_ACCES_TOKEN }}
+
+      - name: Cleanup
+        run: rm -r dist
+
