@@ -39,15 +39,29 @@ train-jzVbxj
 """
 ```
 
-See [the Documentation](/docs) for more examples, including real word schedules from JR & SNCF! 
+Have a look at [the documentation](/docs) for more examples, including real word schedules from JR & SNCF! 
   
 ## Installation  
   
-Jikoku is not available on PyPI yet. For now, download the source code and build the package locally, preferable using [Poetry](https://github.com/python-poetry/poetry).
+Jikoku is available on PyPI. Install via using (preferably in a virtual environment) via:
+```bash
+pip install jikoku
+```
 
+## Contributing
+
+Pull requests, feature requests or other ideas always welcome.
+To get a local development environment setup, you will need [Poetry](https://github.com/python-poetry/poetry) installed. Then:
 ```bash
 git clone https://github.com/TakeoIschiFan/Jikoku
 cd Jikoku
 poetry install
 ```
-After which, a Jikoku package should be installed in the local Poetry virtual environment.
+> Note: use `poetry install --with docs if you want to compile the documentation website
+
+To get logging working, add a `.env` file in the root directory which contains the following variables
+```txt
+PYTHONPATH="jikoku:tests"
+DEBUG="true"
+```
+

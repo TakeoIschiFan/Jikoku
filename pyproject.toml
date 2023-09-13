@@ -2,7 +2,7 @@
 name = "jikoku"
 version = "0.0.1"
 description = "Python utility to generate working timetables from general schedule data."
-authors = ["Anton L <antonl@github.com>"]
+authors = ["Anton L <takeoischifan@github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
